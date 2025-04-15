@@ -4,6 +4,8 @@ services:
     env: python
     buildCommand: pip install -r requirements.txt
     startCommand: streamlit run app.py
+  bash .render/install_chrome.sh
+  pip install -r requirements.txt
     envVars:
       - key: PYTHONUNBUFFERED
         value: "1"
