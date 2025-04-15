@@ -1,13 +1,19 @@
 services:
   - type: web
-    name: roleta-scraper
+    name: roleta-streamlit
     env: python
-    buildCommand: pip install -r requirements.txt
+    buildCommand: |
+      apt-get update && \
+      apt-get install -y wget unzip curl gnupg && \
+      mkdir -p .render/chrome .render/chromedriver && \
+      wget https://storage.googleapis.com/chrome-for-testing-public/122.0.6261.57/linux64/chrome-linux64.zip && \
+      unzip chrome-linux64.zip -d .render/chrome && \
+      mv .render/chrome/chrome-linux64 .render/chrome/opt && \
+      wget https://storage.googleapis.com/chrome-for-testing-public/122.0.6261.57/linux64/chromedriver-linux64.zip && \
+      unzip chromedriver-linux64.zip -d .render/chromedriver && \
+      mv .render/chromedriver/chromedriver-linux64/chromedriver .render/chromedriver/bin && \
+      chmod +x .render/chromedriver/bin/chromedriver
     startCommand: streamlit run app.py
-  bash .render/install_chrome.sh
-  pip install -r requirements.txt
     envVars:
       - key: PYTHONUNBUFFERED
-        value: "1"
-    runtime:
-      pythonVersion: 3.11
+        value: '1'
